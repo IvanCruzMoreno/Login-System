@@ -29,6 +29,7 @@ public class UserController {
 	public String index() {
 		return "index";
 	}
+	
 	@GetMapping("/userForm")
 	public String userForm(Model model) {
 		
@@ -39,6 +40,7 @@ public class UserController {
 		
 		return "user-form/user-view";
 	}
+	
 	@GetMapping("/editUser/{id}")
 	public String userForm(Model model, @PathVariable(name="id") Long id) throws Exception{
 		
@@ -51,10 +53,22 @@ public class UserController {
 		model.addAttribute("editMode", true); //Activa el tab del formulario
 		return "user-form/user-view";
 	}
+	
 	@GetMapping("/userForm/cancel")
 	public String cancelEditUser(ModelMap model){
 		return "redirect:/userForm";
 	}
+	
+	@GetMapping("/deleteUser/{id}")
+	public String deleteUser(Model model, @PathVariable(name = "id") Long id) {
+		try {
+			userService.deleteUser(id);
+		}catch(Exception e) {
+			model.addAttribute("listErrorMessage",e.getMessage());
+		}
+		return userForm(model);
+	}
+	
 	@PostMapping("/userForm")
 	public String createUser(@Valid @ModelAttribute("userForm") User user, BindingResult result, ModelMap model) {
 		if (result.hasErrors()) {
@@ -77,6 +91,7 @@ public class UserController {
 		model.addAttribute("roles",roleRepository.findAll());
 		return "user-form/user-view";
 	}
+	
 	@PostMapping("/editUser")
 	public String postEditUserForm(@Valid @ModelAttribute ("userForm") User user, BindingResult result, ModelMap model) {
 		if(result.hasErrors()) {
@@ -102,4 +117,5 @@ public class UserController {
 		model.addAttribute("roles",roleRepository.findAll());
 		return "user-form/user-view";
 	}
+	
 }
