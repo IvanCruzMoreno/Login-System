@@ -42,4 +42,29 @@ public class UserServiceImpl implements UserService{
 		return user;
 	}
 
+	@Override
+	public User getUserById(Long id) throws Exception {
+		User user = repo.findById(id).orElseThrow(() -> new Exception("User not found"));
+		return user;
+	}
+
+	@Override
+	public User updateUser(User user) throws Exception {
+		User toUser = getUserById(user.getId());
+		mapUser(user, toUser);
+		return repo.save(toUser);
+	}
+	/**
+	 * Map everythin but the password.
+	 * @param from
+	 * @param to
+	 */
+	protected void mapUser(User from,User to) {
+		to.setUserName(from.getUserName());
+		to.setFirstName(from.getFirstName());
+		to.setLastName(from.getLastName());
+		to.setEmail(from.getEmail());
+		to.setRoles(from.getRoles());
+	}
+
 }
