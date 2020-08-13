@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <title>Mi primer Login</title>
 
@@ -25,7 +26,7 @@
                 <div class="col-12 user-img">
                     <img src="static/images/user.png" th:src="@{/images/user.png}"/>
                 </div>
-                <form class="col-12" th:action="@{/login}" method="get">
+                <form class="col-12" th:action="@{/login}" method="post">
                     <div class="form-group" id="user-group">
                         <input type="text" class="form-control" placeholder="Nombre de usuario" name="username"/>
                     </div>

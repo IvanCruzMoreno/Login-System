@@ -2,6 +2,7 @@ package com.badbadcode.application.service;
 
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.badbadcode.application.dto.ChangePasswordForm;
@@ -13,6 +14,7 @@ public class UserServiceImpl implements UserService{
 
 	@Autowired
 	UserRepository repo;
+	
 	
 	@Override
 	public Iterable<User> getAllUsers() {
@@ -38,6 +40,8 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public User createUser(User user) throws Exception {
 		if(checkUsernameAvailable(user) && checkPasswordValid(user)) {
+			BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(4);
+			bCryptPasswordEncoder.encode(user.getPassword());
 			user = repo.save(user);
 		}
 		return user;
